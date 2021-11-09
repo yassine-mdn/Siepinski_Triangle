@@ -2,41 +2,42 @@
 
 void siepinski(int levels);
 
-void printTriangle(int nbrOfTriangles,int offset);
-
 std::string operator*(const std::string& a, unsigned int b);
 
-//TODO: Add comments and clean up code and more meaninful variable names
+int pascal(int, int);
 
 int main()
 {
-	siepinski(10);
+	siepinski(16);
+	//ne pas depacé 16 pour des raison de performance
 	return 0;
+}
+
+int pascal(int row, int column)
+{
+	if (column == 0)
+		return 0;
+	else if (row == 1 && column == 1)
+		return 1;
+	else if (column > row)
+		return 0;
+	else
+		return (pascal(row - 1, column - 1) + pascal(row - 1, column));
 }
 
 void siepinski(int levels)
 {
-	static const int upperBound = levels;
-	if (levels == 0)
+	std::string spacer = "  ";
+	for (int i = 1; i <= levels; i++)
 	{
-		printTriangle(upperBound,levels);
+		std::cout<<spacer*(levels-i);
+		for (int j = 1; j <= i; j++)
+		{
+			(pascal(i,j)%2)?std::cout<<"*":std::cout<<" ";
+			std::cout<<spacer;
+		}
+		printf("\n");
 	}
-	else
-	{
-		printTriangle(upperBound - levels,levels);
-		siepinski(--levels);
-	}
-}
-
-void printTriangle(int nbrOfTriangles,int offset)
-{
-	std::string a{ "  *  " };
-	std::string b{ " *** " };
-	std::string c{ "*****" };
-	std::string spacer{ "  " };
-	std::cout << spacer * offset << a * nbrOfTriangles << std::endl;
-	std::cout << spacer * offset << b * nbrOfTriangles << std::endl;
-	std::cout << spacer * offset << c * nbrOfTriangles << std::endl;
 }
 
 std::string operator*(const std::string& a, unsigned int b)
